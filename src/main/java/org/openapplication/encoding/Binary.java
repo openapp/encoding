@@ -31,9 +31,9 @@ public abstract class Binary {
 			case 1:
 				return false;
 			case 2:
-				return (toByte(binary.charAt(binary.length() - 1)) & 0xF) == 0;
+				return (asByte(binary.charAt(binary.length() - 1)) & 0xF) == 0;
 			case 3:
-				return (toByte(binary.charAt(binary.length() - 1)) & 0x3) == 0;
+				return (asByte(binary.charAt(binary.length() - 1)) & 0x3) == 0;
 			}
 		return false;
 	}
@@ -45,11 +45,11 @@ public abstract class Binary {
 			'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2',
 			'3', '4', '5', '6', '7', '8', '9', '-', '_' };
 
-	public static char toChar(byte digit) {
+	public static char asChar(byte digit) {
 		return (char) BASE64_DIGITS[digit];
 	}
 
-	public static byte toByte(char digit) {
+	public static byte asByte(char digit) {
 		if (digit == '-') { // ASCII 45
 			return 62; // See RFC 4648 base64url
 		} else if (digit <= '9') { // ASCII 48-57 ('0'-'9')
@@ -68,11 +68,11 @@ public abstract class Binary {
 						+ Integer.toHexString(digit));
 	}
 
-	public static char toHexChar(int digit) {
+	public static char asHexChar(int digit) {
 		return (char) (digit < 0xA ? (digit + '0') : (digit + 'A' - 0xA));
 	}
 
-	public static byte toHexByte(char digit) {
+	public static byte asHexByte(char digit) {
 		if (digit <= '9') {
 			if (digit >= '0')
 				return (byte) (digit - '0');
@@ -87,7 +87,7 @@ public abstract class Binary {
 						+ Integer.toHexString(digit));
 	}
 
-	public static char[] toCharArray(byte[] binary) {
+	public static char[] asCharArray(byte[] binary) {
 		final int size = binary.length * 8;
 		final int length = size / 6;
 		final int remainder = size % 6;
@@ -97,22 +97,22 @@ public abstract class Binary {
 			int shift = j % 8;
 			byte m = binary[position];
 			if (shift <= 2)
-				chars[i] = toChar((byte) (((m & 0xFF) >>> (2 - shift)) & 0x3F));
+				chars[i] = asChar((byte) (((m & 0xFF) >>> (2 - shift)) & 0x3F));
 			else {
 				byte l = binary[position + 1];
-				chars[i] = toChar((byte) ((((m & 0xFF) << (shift - 2)) & 0x3F) | ((l & 0xFF) >>> (10 - shift))));
+				chars[i] = asChar((byte) ((((m & 0xFF) << (shift - 2)) & 0x3F) | ((l & 0xFF) >>> (10 - shift))));
 			}
 		}
 		if (remainder > 0)
-			chars[length] = toChar((byte) (((binary[binary.length - 1] & 0xFF) << (6 - remainder)) & 0x3F));
+			chars[length] = asChar((byte) (((binary[binary.length - 1] & 0xFF) << (6 - remainder)) & 0x3F));
 		return chars;
 	}
 
-	public static String toString(byte[] binary) {
-		return new String(toCharArray(binary));
+	public static String asString(byte[] binary) {
+		return new String(asCharArray(binary));
 	}
 
-	public static byte[] toByteArray(CharSequence binary) {
+	public static byte[] asByteArray(CharSequence binary) {
 		final int size = binary.length() * 6;
 		final int length = size / 8;
 		final int remainder = size % 8;
@@ -123,16 +123,16 @@ public abstract class Binary {
 			char m = binary.charAt(position);
 			char l = binary.charAt(position + 1);
 			if (shift <= 4)
-				bytes[i] = (byte) ((Binary.toByte(m) << (2 + shift)) | (Binary
-						.toByte(l) >>> (4 - shift)));
+				bytes[i] = (byte) ((Binary.asByte(m) << (2 + shift)) | (Binary
+						.asByte(l) >>> (4 - shift)));
 			else {
 				char n = binary.charAt(position + 2);
-				bytes[i] = (byte) ((Binary.toByte(m) << 7)
-						| (Binary.toByte(l) << 1) | (Binary.toByte(n) >>> 5));
+				bytes[i] = (byte) ((Binary.asByte(m) << 7)
+						| (Binary.asByte(l) << 1) | (Binary.asByte(n) >>> 5));
 			}
 		}
 		if (remainder > 0
-				&& 0 != ((Binary.toByte(binary.charAt(binary.length() - 1)) << (6 - remainder)) & 0x3F))
+				&& 0 != ((Binary.asByte(binary.charAt(binary.length() - 1)) << (6 - remainder)) & 0x3F))
 			throw new IllegalArgumentException(
 					"Invalid Base64: non-zero bits in padding");
 		return bytes;
@@ -142,7 +142,7 @@ public abstract class Binary {
 		return new Binary() {
 			@Override
 			public char[] toCharArray() {
-				return toCharArray(binary);
+				return asCharArray(binary);
 			}
 
 			@Override
@@ -161,7 +161,7 @@ public abstract class Binary {
 
 			@Override
 			public byte[] toByteArray() {
-				return toByteArray(CharBuffer.wrap(binary));
+				return asByteArray(CharBuffer.wrap(binary));
 			}
 		};
 	}

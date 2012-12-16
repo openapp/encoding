@@ -23,10 +23,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import static org.openapplication.encoding.Binary.toByte;
-import static org.openapplication.encoding.Binary.toChar;
-import static org.openapplication.encoding.Binary.toHexByte;
-import static org.openapplication.encoding.Binary.toHexChar;
+import static org.openapplication.encoding.Binary.asByte;
+import static org.openapplication.encoding.Binary.asChar;
+import static org.openapplication.encoding.Binary.asHexByte;
+import static org.openapplication.encoding.Binary.asHexChar;
 
 public abstract class Id {
 
@@ -137,36 +137,36 @@ public abstract class Id {
 		final long m = uuid.getMostSignificantBits();
 		final long l = uuid.getLeastSignificantBits();
 		if (2 != (l >>> 62)) // If the UUID variant isn't standard
-			return Binary.toCharArray(asByteArray(uuid));
+			return Binary.asCharArray(asByteArray(uuid));
 		final long x = 0xFC00000000000000L;
 		return new char[] {
 				// Most significant 64 bits
-				toChar((byte) ((m & (x >>> 0)) >>> 58)), // 0-5
-				toChar((byte) ((m & (x >>> 6)) >>> 52)), // 6-11
-				toChar((byte) ((m & (x >>> 12)) >>> 46)), // 12-17
-				toChar((byte) ((m & (x >>> 18)) >>> 40)), // 18-23
-				toChar((byte) ((m & (x >>> 24)) >>> 34)), // 24-29
-				toChar((byte) ((m & (x >>> 30)) >>> 28)), // 30-35
-				toChar((byte) ((m & (x >>> 36)) >>> 22)), // 36-41
-				toChar((byte) ((m & (x >>> 42)) >>> 16)), // 42-47
-				toChar((byte) ((m & (x >>> 48)) >>> 10)), // 48-53
-				toChar((byte) ((m & (x >>> 54)) >>> 4)), // 54-59
-				toChar((byte) (((m & (x >>> 60)) << 2) // 60-63
+				asChar((byte) ((m & (x >>> 0)) >>> 58)), // 0-5
+				asChar((byte) ((m & (x >>> 6)) >>> 52)), // 6-11
+				asChar((byte) ((m & (x >>> 12)) >>> 46)), // 12-17
+				asChar((byte) ((m & (x >>> 18)) >>> 40)), // 18-23
+				asChar((byte) ((m & (x >>> 24)) >>> 34)), // 24-29
+				asChar((byte) ((m & (x >>> 30)) >>> 28)), // 30-35
+				asChar((byte) ((m & (x >>> 36)) >>> 22)), // 36-41
+				asChar((byte) ((m & (x >>> 42)) >>> 16)), // 42-47
+				asChar((byte) ((m & (x >>> 48)) >>> 10)), // 48-53
+				asChar((byte) ((m & (x >>> 54)) >>> 4)), // 54-59
+				asChar((byte) (((m & (x >>> 60)) << 2) // 60-63
 				// Least significant 64 bits
 				// Ignoring bits 64-65! For standard UUIDs, they are always 1 0,
 				// so we skip them to get 126 bits of output (which can be
 				// Base64 encoded without overhead)
 				| ((l >>> 60) & 0x3))), // 66-67
-				toChar((byte) ((l & (x >>> 4)) >>> 54)), // 68-73
-				toChar((byte) ((l & (x >>> 10)) >>> 48)), // 74-79
-				toChar((byte) ((l & (x >>> 16)) >>> 42)), // 80-85
-				toChar((byte) ((l & (x >>> 22)) >>> 36)), // 86-91
-				toChar((byte) ((l & (x >>> 28)) >>> 30)), // 92-97
-				toChar((byte) ((l & (x >>> 34)) >>> 24)), // 98-103
-				toChar((byte) ((l & (x >>> 40)) >>> 18)), // 104-109
-				toChar((byte) ((l & (x >>> 46)) >>> 12)), // 110-115
-				toChar((byte) ((l & (x >>> 52)) >>> 6)), // 116-121
-				toChar((byte) ((l & (x >>> 58)) >>> 0)) // 122-127
+				asChar((byte) ((l & (x >>> 4)) >>> 54)), // 68-73
+				asChar((byte) ((l & (x >>> 10)) >>> 48)), // 74-79
+				asChar((byte) ((l & (x >>> 16)) >>> 42)), // 80-85
+				asChar((byte) ((l & (x >>> 22)) >>> 36)), // 86-91
+				asChar((byte) ((l & (x >>> 28)) >>> 30)), // 92-97
+				asChar((byte) ((l & (x >>> 34)) >>> 24)), // 98-103
+				asChar((byte) ((l & (x >>> 40)) >>> 18)), // 104-109
+				asChar((byte) ((l & (x >>> 46)) >>> 12)), // 110-115
+				asChar((byte) ((l & (x >>> 52)) >>> 6)), // 116-121
+				asChar((byte) ((l & (x >>> 58)) >>> 0)) // 122-127
 		};
 	}
 
@@ -178,35 +178,35 @@ public abstract class Id {
 		switch (uuid.length()) {
 		case 21:
 			return new UUID( // Most significant 64 bits
-					((long) toByte(uuid.charAt(0)) << 58)
-							| ((long) toByte(uuid.charAt(1)) << 52)
-							| ((long) toByte(uuid.charAt(2)) << 46)
-							| ((long) toByte(uuid.charAt(3)) << 40)
-							| ((long) toByte(uuid.charAt(4)) << 34)
-							| ((long) toByte(uuid.charAt(5)) << 28)
-							| ((long) toByte(uuid.charAt(6)) << 22)
-							| ((long) toByte(uuid.charAt(7)) << 16)
-							| ((long) toByte(uuid.charAt(8)) << 10)
-							| ((long) toByte(uuid.charAt(9)) << 4)
-							| ((long) toByte(uuid.charAt(10)) >>> 2),
+					((long) asByte(uuid.charAt(0)) << 58)
+							| ((long) asByte(uuid.charAt(1)) << 52)
+							| ((long) asByte(uuid.charAt(2)) << 46)
+							| ((long) asByte(uuid.charAt(3)) << 40)
+							| ((long) asByte(uuid.charAt(4)) << 34)
+							| ((long) asByte(uuid.charAt(5)) << 28)
+							| ((long) asByte(uuid.charAt(6)) << 22)
+							| ((long) asByte(uuid.charAt(7)) << 16)
+							| ((long) asByte(uuid.charAt(8)) << 10)
+							| ((long) asByte(uuid.charAt(9)) << 4)
+							| ((long) asByte(uuid.charAt(10)) >>> 2),
 					// Least significant 64 bits
 					// Bits 64-65 are always 1 0 for standard UUIDs, and those
 					// bits are assumed to be skipped in the input because
 					// without them, there is no longer a need to incur any
 					// Base64 encoding overhead (128-2=126 is divisible by 6)
-					((0x8 | (0x3 & (long) toByte(uuid.charAt(10)))) << 60)
-							| ((long) toByte(uuid.charAt(11)) << 54)
-							| ((long) toByte(uuid.charAt(12)) << 48)
-							| ((long) toByte(uuid.charAt(13)) << 42)
-							| ((long) toByte(uuid.charAt(14)) << 36)
-							| ((long) toByte(uuid.charAt(15)) << 30)
-							| ((long) toByte(uuid.charAt(16)) << 24)
-							| ((long) toByte(uuid.charAt(17)) << 18)
-							| ((long) toByte(uuid.charAt(18)) << 12)
-							| ((long) toByte(uuid.charAt(19)) << 6)
-							| ((long) toByte(uuid.charAt(20)) << 0));
+					((0x8 | (0x3 & (long) asByte(uuid.charAt(10)))) << 60)
+							| ((long) asByte(uuid.charAt(11)) << 54)
+							| ((long) asByte(uuid.charAt(12)) << 48)
+							| ((long) asByte(uuid.charAt(13)) << 42)
+							| ((long) asByte(uuid.charAt(14)) << 36)
+							| ((long) asByte(uuid.charAt(15)) << 30)
+							| ((long) asByte(uuid.charAt(16)) << 24)
+							| ((long) asByte(uuid.charAt(17)) << 18)
+							| ((long) asByte(uuid.charAt(18)) << 12)
+							| ((long) asByte(uuid.charAt(19)) << 6)
+							| ((long) asByte(uuid.charAt(20)) << 0));
 		case 22:
-			return asUuid(Binary.toByteArray(uuid));
+			return asUuid(Binary.asByteArray(uuid));
 		case 36:
 			return UUID.fromString(uuid.toString());
 		}
@@ -221,7 +221,7 @@ public abstract class Id {
 		return asUuid(NS_URI, new Name() {
 			@Override
 			public void update(MessageDigest digest) {
-				digest.update(Text.toByteBuffer(uri.toString()));
+				digest.update(Text.asByteBuffer(uri.toString()));
 			}
 		});
 	}
@@ -351,8 +351,8 @@ public abstract class Id {
 			// Percent encode
 			for (int j = 0; j < size; j++) {
 				out.append('%');
-				out.append(toHexChar((bytes[j] & 0xF0) >>> 4));
-				out.append(toHexChar(bytes[j] & 0xF));
+				out.append(asHexChar((bytes[j] & 0xF0) >>> 4));
+				out.append(asHexChar(bytes[j] & 0xF));
 			}
 		}
 	}
@@ -378,8 +378,8 @@ public abstract class Id {
 					return;
 				}
 				try {
-					b = (toHexByte(in.charAt(++i)) << 4)
-							| toHexByte(in.charAt(++i));
+					b = (asHexByte(in.charAt(++i)) << 4)
+							| asHexByte(in.charAt(++i));
 				} catch (IllegalArgumentException e) {
 					out.append(REPLACEMENT_CHARACTER);
 					remaining = 0;

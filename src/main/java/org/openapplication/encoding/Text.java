@@ -47,7 +47,7 @@ public abstract class Text {
 		}
 	};
 
-	public static CharBuffer toCharBuffer(ByteBuffer text) {
+	public static CharBuffer asCharBuffer(ByteBuffer text) {
 		try {
 			return localDecoder.get().decode(text);
 		} catch (CharacterCodingException e) {
@@ -55,11 +55,11 @@ public abstract class Text {
 		}
 	}
 
-	public static ByteBuffer toByteBuffer(CharSequence text) {
-		return toByteBuffer(CharBuffer.wrap(text));
+	public static ByteBuffer asByteBuffer(CharSequence text) {
+		return asByteBuffer(CharBuffer.wrap(text));
 	}
 
-	public static ByteBuffer toByteBuffer(CharBuffer text) {
+	public static ByteBuffer asByteBuffer(CharBuffer text) {
 		try {
 			return localEncoder.get().encode(text);
 		} catch (CharacterCodingException e) {
@@ -72,7 +72,7 @@ public abstract class Text {
 		return new Text() {
 			@Override
 			public CharBuffer toCharBuffer() {
-				return toCharBuffer(byteBuffer.duplicate());
+				return asCharBuffer(byteBuffer.duplicate());
 			}
 
 			@Override
@@ -92,7 +92,7 @@ public abstract class Text {
 
 			@Override
 			public ByteBuffer toByteBuffer() {
-				return toByteBuffer(charBuffer.duplicate());
+				return asByteBuffer(charBuffer.duplicate());
 			}
 		};
 	}
@@ -107,7 +107,7 @@ public abstract class Text {
 
 			@Override
 			public ByteBuffer toByteBuffer() {
-				return toByteBuffer(charBuffer.duplicate());
+				return asByteBuffer(charBuffer.duplicate());
 			}
 		};
 	}

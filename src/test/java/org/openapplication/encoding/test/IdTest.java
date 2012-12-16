@@ -42,12 +42,12 @@ public class IdTest {
 	public void testAsCharsAsBytes() {
 		byte[] hello = "你好hi".getBytes(Charset.forName("UTF-8"));
 
-		char[] chars = Binary.toCharArray(hello);
+		char[] chars = Binary.asCharArray(hello);
 		// for (char c : chars)
 		// System.out.print(c);
 		// System.out.println();
 
-		byte[] bytes = Binary.toByteArray(new String(chars));
+		byte[] bytes = Binary.asByteArray(new String(chars));
 		// for (byte b : bytes)
 		// System.out.print((char) (b & 0xFF));
 		// System.out.println();
